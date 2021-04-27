@@ -14,7 +14,19 @@ void main() {
     ),
   );
 
-  runApp(App(weatherRepository: weatherRepository));
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<ThemeBloc>(
+          create: (context) => ThemeBloc(),
+        ),
+        BlocProvider<SettingsBloc>(
+          create: (context) => SettingsBloc(),
+        ),
+      ],
+      child: App(weatherRepository: weatherRepository),
+    ),
+  );
 }
 
 class App extends StatelessWidget {
@@ -26,12 +38,17 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Weather',
-      home: BlocProvider(
-        create: (context) => WeatherBloc(weatherRepository: weatherRepository),
-        child: Weather(),
-      ),
+    return BlocBuilder<ThemeBloc, ThemeState>(
+      builder: (context, themeState) {
+        return MaterialApp(
+          title: 'Flutter Weather',
+          home: BlocProvider(
+            create: (context) =>
+                WeatherBloc(weatherRepository: weatherRepository),
+            child: Weather(),
+          ),
+        );
+      },
     );
   }
 }
