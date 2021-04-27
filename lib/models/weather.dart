@@ -60,6 +60,7 @@ class Weather extends Equatable {
       maxTemp: consolidateWeather['max_temp'] as double,
       locationId: json['woeid'] as int,
       created: consolidateWeather['created'],
+      lastUpdated: DateTime.now(),
       location: json['title'],
     );
   }
